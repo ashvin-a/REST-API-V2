@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import (ProductDetailApiView,
-                    CreateProductApiView,)
+from .views import (AviyalApiView)
 
 urlpatterns = [
-    path('',CreateProductApiView.as_view(),name='create_product'),
-    path('<int:pk>/',ProductDetailApiView.as_view(),name='product_details'),
+    path('',AviyalApiView.as_view(),name='create_product'),
+    path('<int:pk>/',AviyalApiView.as_view(),name='product_details'),
+    path('<int:pk>/update/',AviyalApiView.as_view(),name='product_details'),
+    path('<int:pk>/delete/',AviyalApiView.as_view(),name='product_details'),
 ]
