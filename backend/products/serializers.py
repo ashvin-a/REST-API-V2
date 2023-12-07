@@ -7,8 +7,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id','title','content','price','retail_price']
+        fields = ['id','title','content','price','retail_price',]
     
     def get_retail_price(self,obj):
-        return obj.sale_price
-        
+        try:
+            return obj.sale_price
+        except:
+            return None
