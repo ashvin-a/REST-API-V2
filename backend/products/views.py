@@ -49,13 +49,14 @@ class DeleteProductDetailApiView(generics.DestroyAPIView):
     def perform_destroy(self, instance):
         return super().perform_destroy(instance)
 
-class AviyalApiView(mixins.CreateModelMixin,
+class AviyalApiView(generics.GenericAPIView,
+                    mixins.CreateModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
-                    mixins.ListModelMixin,
-                    generics.GenericAPIView):
+                    mixins.ListModelMixin,):
     '''This is the ultimate aviyal api view'''
+    allowed_methods = ['GET', 'POST', 'PUT', 'DELETE']
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
@@ -69,13 +70,8 @@ class AviyalApiView(mixins.CreateModelMixin,
     def post(self,request,*args, **kwargs):
         return self.create(request,*args, **kwargs)
 
-    def update(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
+        return self.update(request,*args, **kwargs)
 
-        instance = self.get_object()
-        serializer = self.get_serializer(instance,data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            self.perform_update(serializer)
-        return Response(serializer.data)
-
-    def perform_destroy(self, instance,*args, **kwargs):
-        return super().perform_destroy(instance)
+    def delete(self, request,*args, **kwargs):
+        return self.destroy(self, request,*args, **kwargs)
