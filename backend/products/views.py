@@ -1,4 +1,6 @@
-from rest_framework import generics
+from rest_framework import generics,permissions
+from .permissions import IsStaffEditorPermission
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from .models import Product
 from rest_framework.generics import mixins
@@ -11,7 +13,9 @@ class ListCreateProductApiView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
-
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [permissions.IsAdminUser,IsStaffEditorPermission]
+    
     def perform_create(self, serializer):
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content') or None
@@ -32,12 +36,13 @@ class UpdateProductDetailApiView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsStaffEditorPermission]
 
     def perform_update(self, serializer):
         instance = serializer.save()
         if instance.content is None:
             instance.content = instance.title
-
 
 
 class DeleteProductDetailApiView(generics.DestroyAPIView):
@@ -48,6 +53,7 @@ class DeleteProductDetailApiView(generics.DestroyAPIView):
 
     def perform_destroy(self, instance):
         return super().perform_destroy(instance)
+
 
 class AviyalApiView(generics.GenericAPIView,
                     mixins.CreateModelMixin,
