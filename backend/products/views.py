@@ -1,20 +1,20 @@
+from api.permissions import IsStaffEditorPermission
 from rest_framework import generics,permissions
-from .permissions import IsStaffEditorPermission
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.response import Response
-from .models import Product
 from rest_framework.generics import mixins
+from api.mixins import StaffEditorPermissionMixin
+from .models import Product
 from .serializers import ProductSerializer
-# Create your views here.
 
 
-class ListCreateProductApiView(generics.ListCreateAPIView):
-    '''This is the api for listing product details if its a get request and creates new product if its a post request'''
+class ListCreateProductApiView(generics.ListCreateAPIView,
+                               StaffEditorPermissionMixin):
+    """
+    This is the api for listing product details if its a get request 
+    and creates new product if its a post request
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser,IsStaffEditorPermission]
     
     def perform_create(self, serializer):
         title = serializer.validated_data.get('title')
@@ -25,19 +25,24 @@ class ListCreateProductApiView(generics.ListCreateAPIView):
 
 
 class ProductDetailApiView(generics.RetrieveAPIView):
-    '''This is the api for listing product details'''
+    """
+    This is the api for showing a detailed view of the selected 
+    product.
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
 
 
-class UpdateProductDetailApiView(generics.UpdateAPIView):
-    '''This is the api for listing product details'''
+class UpdateProductDetailApiView(generics.UpdateAPIView,
+                                 StaffEditorPermissionMixin):
+    """
+    This is the api for updating the details of existing products.
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsStaffEditorPermission]
+    permission_classes = [permissions.IsAdminUser,IsStaffEditorPermission]
 
     def perform_update(self, serializer):
         instance = serializer.save()
@@ -45,8 +50,11 @@ class UpdateProductDetailApiView(generics.UpdateAPIView):
             instance.content = instance.title
 
 
-class DeleteProductDetailApiView(generics.DestroyAPIView):
-    '''This is the api for listing product details'''
+class DeleteProductDetailApiView(generics.DestroyAPIView,
+                                 StaffEditorPermissionMixin):
+    """
+    This is the api for deleting products
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
@@ -61,7 +69,9 @@ class AviyalApiView(generics.GenericAPIView,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
                     mixins.ListModelMixin,):
-    '''This is the ultimate aviyal api view'''
+    """
+    This is the ultimate aviyal api which can do all operations🛐
+    """
     allowed_methods = ['GET', 'POST', 'PUT', 'DELETE']
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
