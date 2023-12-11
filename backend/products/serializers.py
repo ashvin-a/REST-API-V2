@@ -18,11 +18,6 @@ class ProductSerializer(serializers.ModelSerializer):
     """
     Try to put validators in a separate file
     """
-    # def validate_title(self, value):
-    #     qs = Product.objects.filter(title__iexact=value)
-    #     if qs.exists():
-    #         raise serializers.ValidationError(f'{value} already exists!')
-    #     return value 
     
     def create(self, validated_data):
         return super().create(validated_data)

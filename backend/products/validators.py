@@ -8,4 +8,4 @@ def validate_title(value):
             raise serializers.ValidationError(f'{value} already exists!')
         return value 
 
-unique_aano = UniqueValidator(queryset=Product.objects.all())
+unique_aano = UniqueValidator(queryset=Product.objects.all(),lookup='iexact')

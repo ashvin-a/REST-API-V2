@@ -1,13 +1,14 @@
 from api.permissions import IsStaffEditorPermission
 from rest_framework import generics,permissions
 from rest_framework.generics import mixins
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import StaffEditorPermissionMixin,UserQueryMixin
 from .models import Product
 from .serializers import ProductSerializer
 
 
 class ListCreateProductApiView(generics.ListCreateAPIView,
-                               StaffEditorPermissionMixin):
+                               StaffEditorPermissionMixin,
+                               UserQueryMixin):
     """
     This is the api view for listing product details if its a get request
     and creates new product if its a post request
