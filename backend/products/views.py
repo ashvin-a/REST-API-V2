@@ -9,7 +9,7 @@ from .serializers import ProductSerializer
 class ListCreateProductApiView(generics.ListCreateAPIView,
                                StaffEditorPermissionMixin):
     """
-    This is the api for listing product details if its a get request 
+    This is the api view for listing product details if its a get request
     and creates new product if its a post request
     """
     queryset = Product.objects.all()
@@ -17,10 +17,12 @@ class ListCreateProductApiView(generics.ListCreateAPIView,
     # lookup_field = 'pk'
     
     def perform_create(self, serializer):
+        email = serializer.validated_data.pop('email')
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content') or None
         if content is None:
             content = title
+        print(email)
         serializer.save(content=content)
 
 
