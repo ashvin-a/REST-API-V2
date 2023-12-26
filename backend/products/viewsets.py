@@ -2,13 +2,15 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Product
 from .serializers import ProductSerializer
 
+
 class ProductViewset(ModelViewSet):
     """
     The viewset for Product model.
     """
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
+
     """
     While using generic viewsets, you may customize it 
     with the help of mixins. In the case of get method,
