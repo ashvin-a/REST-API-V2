@@ -1,12 +1,12 @@
-from .permissions import IsStaffEditorPermission
+from .permissions import IsStaffEditorPermission  # ? This mixin is broken bro
 from rest_framework import permissions
 
 
-class StaffEditorPermissionMixin:
+class StaffEditorPermissionMixin():
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
 
-class UserQueryMixin:
+class UserQueryMixin():
     """
     This mixin validates whether the user is authenticated
     """

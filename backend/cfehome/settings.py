@@ -6,7 +6,9 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-$qm!03%n29x+xw4g3*=^5j0ffyvmuyi^170$ij6_+hqj4d@ys="
+SECRET_KEY = (
+    "django-insecure-$qm!03%n29x+xw4g3*=^5j0ffyvmuyi^170$ij6_+hqj4d@ys="
+)
 
 DEBUG = True
 
@@ -105,4 +107,13 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ],
+    # "DEFAULT_THROTTLE_CLASSES":[#! Use Nginx for additional throttling
+    # !control
+    #     "rest_framework.throttling.UserRateThrottle",
+    #     "rest_framework.throttling.AnonRateThrottle",
+    # ],
+    # "DEFAULT_THROTTLE_RATES": {
+    #     "user": "100/day",
+    #     "anon": "10/minute",
+    # },
 }
