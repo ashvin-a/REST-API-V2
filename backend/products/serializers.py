@@ -42,14 +42,16 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_edit_url(self, obj):
         request = self.context.get("request")
         if request:
-            return reverse("update_details", kwargs={"pk": obj.id},
-                           request=request)
+            return reverse(
+                "update_details", kwargs={"pk": obj.id}, request=request
+            )
 
     def get_url(self, obj):
         request = self.context.get("request")
         if request:
-            return reverse("product_details", kwargs={"pk": obj.id},
-                           request=request)
+            return reverse(
+                "product_details", kwargs={"pk": obj.id}, request=request
+            )
         else:
             return None
 

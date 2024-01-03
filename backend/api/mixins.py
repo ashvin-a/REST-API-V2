@@ -14,7 +14,10 @@ class UserQueryMixin():
     user_field = "user"
 
     def get_queryset(self, *args, **kwargs):
+        user = self.request.user
         lookup = {}
-        lookup["user"] = self.request.user
+        lookup[self.user_field] = self.request.user
         qs = super().get_queryset(*args, **kwargs)
+        if user.is_staff:
+            return qs
         return qs.filter(**lookup)  # The most important line 🛐
