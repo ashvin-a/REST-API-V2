@@ -1,10 +1,14 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
+from api.serializers import UserPublicSerializer
 from .models import Product
 from .validators import validate_title, unique_aano
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    owner = UserPublicSerializer(
+        source="user", read_only=True  # !Noice method used here!
+    )  # ?Controls which all fields are read only
     retail_price = serializers.SerializerMethodField(read_only=True)
     url = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.HyperlinkedIdentityField(
@@ -21,7 +25,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "id",
-            # "user",
+            "owner",
             "url",
             "edit_url",
             "title",

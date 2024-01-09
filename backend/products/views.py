@@ -6,7 +6,7 @@ from .serializers import ProductSerializer
 
 
 class ListCreateProductApiView(
-    StaffEditorPermissionMixin, UserQueryMixin, generics.ListCreateAPIView
+    UserQueryMixin, StaffEditorPermissionMixin, generics.ListCreateAPIView
 ):  # !Put permission mixins first to avoid undesirable behaviours.
     """
     This is the api view for listing product details if its a get request
@@ -26,12 +26,12 @@ class ListCreateProductApiView(
         print(email)
         serializer.save(user=self.request.user, content=content)
 
-    def get_queryset(self, *args, **kwargs):
-        user = self.request.user
-        qs = super().get_queryset(*args, **kwargs)
-        if not user.is_authenticated:
-            return Product.objects.none()
-        return qs.filter(user=user)
+    # def get_queryset(self, *args, **kwargs):
+    #     user = self.request.user
+    #     qs = super().get_queryset(*args, **kwargs)
+    #     if not user.is_authenticated:
+    #         return Product.objects.none()
+    #     return qs.filter(user=user)
 
 
 class ProductDetailApiView(
